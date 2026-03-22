@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name: mongodb
+  namespace: roboshop
+  labels:
+    component: mongodb
+    project: roboshop 
+    tire: Database
+spec:
+  replicas: 1
+  selectors:
+    matchLabels:  
+      component: mongodb
+      project: roboshop 
+      tire: Database
+  template:
+    metadata:
+      component: mongodb
+      project: roboshop 
+      tire: Database
+spec:
+  containers:
+    - name: mongodb
+      image: sangala2025/mongodb:v1 
+
+#service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: roboshop
+
+  labels: 
+    component: mongodb
+    project: roboshop 
+    tire: Database
+spec:
+  selectors:
+    component: mongodb
+    project: roboshop 
+    tire: Database
+  ports:
+    - protocol: TCP
+      port: 27017 #service port
+      targetPort: 27017 #container port
