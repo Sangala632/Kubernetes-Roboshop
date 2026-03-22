@@ -48,7 +48,6 @@ metadata:
     tier: database
 
 spec:
-  type: ClusterIP
 
   selector:
     component: redis

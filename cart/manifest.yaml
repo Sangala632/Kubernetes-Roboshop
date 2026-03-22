@@ -69,7 +69,6 @@ metadata:
     tier: application
 
 spec:
-  type: ClusterIP
 
   selector:
     component: cart
@@ -78,5 +77,5 @@ spec:
 
   ports:
   - protocol: TCP
-    port: 8080
+    port: 8080 
     targetPort: 8080

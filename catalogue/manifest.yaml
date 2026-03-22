@@ -68,7 +68,6 @@ metadata:
     tier: application
 
 spec:
-  type: ClusterIP
 
   selector:
     component: catalogue
