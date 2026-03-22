@@ -1,3 +1,4 @@
+# ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,60 +7,76 @@ metadata:
   labels:
     component: cart
     project: roboshop
-    tire: application
+    tier: application
+
 data:
-  REDIS_HOST: redis 
-  CATALOGUE_HOST: catalogue 
-  CATALOGUE_PORT: 8080
+  REDIS_HOST: "redis"
+  CATALOGUE_HOST: "catalogue"
+  CATALOGUE_PORT: "8080"
+
 ---
+# Deployment
 apiVersion: apps/v1
-kind: deployment
+kind: Deployment
 metadata:
   name: cart
   namespace: roboshop
-  # deployment labels
+
   labels:
     component: cart
     project: roboshop
-    tire: application
+    tier: application
+
 spec:
-  replicas: 1   # These are the labels replica set use to create pod replicas, this should match pod labels
+  replicas: 1
+
   selector:
     matchLabels:
       component: cart
       project: roboshop
-      tire: application
-    # This is pod definition
-    template:
-      metadata:
-        labels:
-          component: cart
-          project: roboshop
-          tire: application
-  spec:
-    containers:
+      tier: application
+
+  template:
+    metadata:
+      labels:
+        component: cart
+        project: roboshop
+        tier: application
+
+    spec:
+      containers:
       - name: cart
         image: sangala2025/cart:v1
-    envFrom:
-      - configMapRef:
-          name: cart
+
+        ports:
+        - containerPort: 8080
+
+        envFrom:
+        - configMapRef:
+            name: cart
+
 ---
+# Service
 apiVersion: v1
 kind: Service
 metadata:
   name: cart
   namespace: roboshop
 
-  labels: 
+  labels:
     component: cart
-    project: roboshop 
-    tire: application
+    project: roboshop
+    tier: application
+
 spec:
-  selectors:
+  type: ClusterIP
+
+  selector:
     component: cart
-    project: roboshop 
-    tire: application
+    project: roboshop
+    tier: application
+
   ports:
-    - protocol: TCP
-      port: 8080 #service port
-      targetPort: 8080 #container port
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

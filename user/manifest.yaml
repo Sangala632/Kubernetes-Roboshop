@@ -1,66 +1,83 @@
+# ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: user
   namespace: roboshop
-  labels:
-    component: catalouge
-    project: roboshop
-    tire: application
-data:
-  MONGO: "true" 
-  REDIS_URL: 'redis://redis:6379' 
-  MONGO_URL: "mongodb://mongodb:27017/users"
 
----
-apiVersion: apps/v1
-kind: deployment
-metadata:
-  name: user
-  namespace: roboshop
-  # deployment labels
   labels:
     component: user
     project: roboshop
-    tire: application
+    tier: application
+
+data:
+  MONGO: "true"
+  REDIS_URL: "redis://redis:6379"
+  MONGO_URL: "mongodb://mongodb:27017/users"
+
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  namespace: roboshop
+
+  labels:
+    component: user
+    project: roboshop
+    tier: application
+
 spec:
-  replicas: 1   # These are the labels replica set use to create pod replicas, this should match pod labels
+  replicas: 1
+
   selector:
     matchLabels:
       component: user
       project: roboshop
-      tire: application
-    # This is pod definition
-    template:
-      metadata:
-        labels:
-          component: user
-          project: roboshop
-          tire: application
-  spec:
-    containers:
+      tier: application
+
+  template:
+    metadata:
+      labels:
+        component: user
+        project: roboshop
+        tier: application
+
+    spec:
+      containers:
       - name: user
         image: sangala2025/user:v1
-    envFrom:
-      - configMapRef:
-          name: user
+
+        ports:
+        - containerPort: 8080
+
+        envFrom:
+        - configMapRef:
+            name: user
+
 ---
+# Service
 apiVersion: v1
 kind: Service
 metadata:
   name: user
   namespace: roboshop
 
-  labels: 
+  labels:
     component: user
-    project: roboshop 
-    tire: application
+    project: roboshop
+    tier: application
+
 spec:
-  selectors:
+  type: ClusterIP
+
+  selector:
     component: user
-    project: roboshop 
-    tire: application
+    project: roboshop
+    tier: application
+
   ports:
-    - protocol: TCP
-      port: 8080 #service port
-      targetPort: 8080 #container port
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

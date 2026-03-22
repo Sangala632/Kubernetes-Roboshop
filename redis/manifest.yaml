@@ -1,50 +1,61 @@
+# redis deployment
 apiVersion: apps/v1
-kind: deployment
+kind: Deployment
 metadata:
   name: redis
   namespace: roboshop
-  # deployment labels
+
   labels:
     component: redis
-    project: roboshop 
-    tire: Database
+    project: roboshop
+    tier: database
+
 spec:
- # These are the labels replica set use to create pod replicas, this should match pod labels
   replicas: 1
-  selectors:
-    matchLabels:  
+
+  selector:
+    matchLabels:
       component: redis
-      project: roboshop 
-      tire: Database
-  # This is pod definition
+      project: roboshop
+      tier: database
+
   template:
     metadata:
-      component: redis
-      project: roboshop 
-      tire: Database
-spec:
-  containers:
-    - name: redis
-      image: sangala2025/redis:v1 
+      labels:
+        component: redis
+        project: roboshop
+        tier: database
 
-#service
+    spec:
+      containers:
+      - name: redis
+        image: sangala2025/redis:v1
+
+        ports:
+        - containerPort: 6379
+
 ---
+# redis service
 apiVersion: v1
 kind: Service
 metadata:
   name: redis
   namespace: roboshop
 
-  labels: 
+  labels:
     component: redis
-    project: roboshop 
-    tire: Database
+    project: roboshop
+    tier: database
+
 spec:
-  selectors:
+  type: ClusterIP
+
+  selector:
     component: redis
-    project: roboshop 
-    tire: Database
+    project: roboshop
+    tier: database
+
   ports:
-    - protocol: TCP
-      port: 6379 #service port
-      targetPort: 6379 #container port
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
