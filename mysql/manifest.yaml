@@ -45,13 +45,10 @@ spec:
         ports:
         - containerPort: 3306
 
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql
-              key: MYSQL_ROOT_PASSWORD
-
+        envFrom:
+         - secretRef:
+           name: mysql
+            
 ---
 # service to expose mysql inside cluster
 apiVersion: v1
@@ -65,7 +62,6 @@ metadata:
     tier: Database
 
 spec:
-  type: ClusterIP
 
   selector:
     component: mysql
