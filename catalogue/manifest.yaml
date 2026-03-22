@@ -47,9 +47,6 @@ spec:
       - name: catalogue
         image: sangala2025/catalogue:v1
 
-        ports:
-        - containerPort: 8080
-
         envFrom:
         - configMapRef:
             name: catalogue

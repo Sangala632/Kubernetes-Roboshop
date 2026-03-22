@@ -31,9 +31,6 @@ spec:
       - name: redis
         image: sangala2025/redis:v1
 
-        ports:
-        - containerPort: 6379
-
 ---
 # redis service
 apiVersion: v1

@@ -42,8 +42,6 @@ spec:
       containers:
       - name: mysql
         image: sangala2025/mysql:v1
-        ports:
-        - containerPort: 3306
 
         envFrom:
          - secretRef:

@@ -31,9 +31,6 @@ spec:
       - name: rabbitmq
         image: sangala2025/rabbitmq:v1
 
-        ports:
-        - containerPort: 27017
-
 ---
 # rabbitmq service (cluster internal)
 apiVersion: v1

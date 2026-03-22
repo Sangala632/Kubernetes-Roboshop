@@ -48,9 +48,6 @@ spec:
       - name: cart
         image: sangala2025/cart:v1
 
-        ports:
-        - containerPort: 8080
-
         envFrom:
         - configMapRef:
             name: cart

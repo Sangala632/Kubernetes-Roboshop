@@ -49,9 +49,6 @@ spec:
       - name: shipping
         image: sangala2025/shipping:v1
 
-        ports:
-        - containerPort: 8080
-
         envFrom:
         - configMapRef:
             name: shipping

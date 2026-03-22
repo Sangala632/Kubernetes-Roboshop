@@ -49,9 +49,6 @@ spec:
       - name: user
         image: sangala2025/user:v1
 
-        ports:
-        - containerPort: 8080
-
         envFrom:
         - configMapRef:
             name: user
